@@ -1,4 +1,6 @@
-"""demo: how to use dndlstm"""
+"""demo: how to use dndlstm
+task - learn a sin function, dnd shouldn't help/hurt here...
+"""
 
 import numpy as np
 import torch
