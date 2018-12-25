@@ -2,7 +2,7 @@
 
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/qihongl/dlstm-demo/master)
 
-demo, a simplified lstm cell with a differentiable neural dictionary. 
+demo, a simplified lstm cell with a differentiable neural dictionary. some generalized mechanisms will be implemented shortly
 
 the notebooks are hopefully self explanatory. 
 
