@@ -6,7 +6,7 @@ demo, a simplified lstm cell with a differentiable neural dictionary. some gener
 
 the notebooks are hopefully self explanatory. 
 
-this version is implemented in <a href="https://princetonuniversity.github.io/PsyNeuLink/">psyneulink</a>
+this is implemented in <a href="https://princetonuniversity.github.io/PsyNeuLink/">psyneulink</a> as <a href="https://princetonuniversity.github.io/PsyNeuLink/MemoryFunctions.html?highlight=dnd#psyneulink.core.components.functions.statefulfunctions.memoryfunctions.DND">statefulfunctions.memoryfunctions.DND</a>
 
 <br>
 
