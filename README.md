@@ -2,7 +2,7 @@
 
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/qihongl/dlstm-demo/master)
 
-demo, a simplified lstm cell with a differentiable neural dictionary [1]. some generalized mechanisms will be implemented shortly
+demo, a lstm cell with a differentiable neural dictionary described in Ritter et al. (2018), though I'm not doing <a href="https://arxiv.org/abs/1602.01783">A3C</a>
 
 the notebooks are hopefully self explanatory. 
 
@@ -12,4 +12,6 @@ this is implemented in <a href="https://princetonuniversity.github.io/PsyNeuLink
 
 References: 
 
-- [1] Ritter, S., Wang, J. X., Kurth-Nelson, Z., Jayakumar, S. M., Blundell, C., Pascanu, R., & Botvinick, M. (2018). Been There, Done That: Meta-Learning with Episodic Recall. arXiv [stat.ML]. Retrieved from http://arxiv.org/abs/1805.09692
+- Ritter, S., Wang, J. X., Kurth-Nelson, Z., Jayakumar, S. M., Blundell, C., Pascanu, R., & Botvinick, M. (2018). Been There, Done That: Meta-Learning with Episodic Recall. arXiv [stat.ML]. Retrieved from http://arxiv.org/abs/1805.09692
+
+- also see Blundell et al. 2016, Pritzel et al. 2017 and Kaiser et al 2017... 
