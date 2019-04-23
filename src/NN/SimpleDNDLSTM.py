@@ -1,7 +1,7 @@
 """
 Implement a DND-based LSTM
 - key is given by the input k_t
-- memory content need to be learned 
+- memory content need to be learned
 """
 import numpy as np
 import torch
@@ -12,11 +12,11 @@ from NN.DND import DND
 N_GATES = 4
 
 
-class MyDNDLSTM(nn.Module):
+class SimpleDNDLSTM(nn.Module):
 
     def __init__(self, input_dim, hidden_dim, dict_len, memory_dim, kernel,
                  bias=True):
-        super(MyDNDLSTM, self).__init__()
+        super(SimpleDNDLSTM, self).__init__()
         self.input_dim = input_dim
         self.hidden_dim = hidden_dim
         self.bias = bias
@@ -59,13 +59,9 @@ class MyDNDLSTM(nn.Module):
         # retrieve memory
         m_t = self.dnd.get_memory(k_t).tanh()
         # gate the memory; in general, can be any transformation of it
-        # c_t = c_t + torch.mul(r_t, m_t)
-        # get gated hidden state from the cell state
-        # h_t = torch.mul(o_t, c_t.tanh())
         h_t = torch.mul(o_t, c_t.tanh()) + torch.mul(r_t, m_t)
         # take a episodic snapshot
         self.dnd.save_memory(k_t, h_t)
-        # self.dnd.save_memory(k_t, c_t)
         # reshape data
         h_t = h_t.view(1, h_t.size(0), -1)
         c_t = c_t.view(1, c_t.size(0), -1)

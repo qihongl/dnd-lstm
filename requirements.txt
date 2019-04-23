@@ -1,4 +1,4 @@
-torch==0.4.1
-numpy==1.13.3
+torch
+numpy
 matplotlib
 seaborn
