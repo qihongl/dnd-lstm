@@ -42,7 +42,12 @@ Projecting the memory vectors to the PC space reveal that the choice is encoded 
 - Mnih, V., Badia, A. P., Mirza, M., Graves, A., Lillicrap, T. P., Harley, T., … Kavukcuoglu, K. (2016). Asynchronous Methods for Deep Reinforcement Learning. Retrieved from http://arxiv.org/abs/1602.01783
 
 
-### extra note 
+### Extra note 
 
-The DND part is implemented in <a href="https://princetonuniversity.github.io/PsyNeuLink/">psyneulink</a> as <a href="https://princetonuniversity.github.io/PsyNeuLink/MemoryFunctions.html?highlight=dnd#psyneulink.core.components.functions.statefulfunctions.memoryfunctions.DND">statefulfunctions.memoryfunctions.DND</a>. 
-
+A variant of the DND part is implemented in 
+<a href="https://princetonuniversity.github.io/PsyNeuLink/">psyneulink</a> 
+as 
+<a href="https://princetonuniversity.github.io/PsyNeuLink/MemoryFunctions.html?highlight=dnd#psyneulink.core.components.functions.statefulfunctions.memoryfunctions.ContentAddressableMemory">
+    pnl.ContentAddressableMemory
+</a>
+. 
