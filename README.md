@@ -29,7 +29,7 @@ Behaviorally, when the model encounters a previously-seen trial, the choice accu
 
 <img src="https://github.com/qihongl/dnd-lstm/blob/master/figs/correct-rate.png" width=450>
 
-Projecting the memory vectors to the PC space reveal that the choice is encoded in the memory:  
+PCA analysis of the memory content shows that the choice is encoded in the memory: 
 
 <img src="https://github.com/qihongl/dnd-lstm/blob/master/figs/pc-v.png" width=450>
 
