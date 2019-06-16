@@ -63,6 +63,8 @@ as <a href="https://princetonuniversity.github.io/PsyNeuLink/MemoryFunctions.htm
 
 2. The original paper uses A3C. I'm doing A2C instead - no asynchronous parallel rollouts. 
 
+3. The memory mechanism is called a "differentiable neural dictionary", but note that it is not differentiable. Actually, that's the point of this mechanism: as it is non-differentiable, one can impose explicit algorithm of what the memory mechanism suppose to do, such as one-nearest neighbor search or kernel-based similarity lookup, which is different from end-to-end models (e.g. <a href="https://arxiv.org/abs/1410.5401">NTM</a>, <a href="https://www.nature.com/articles/nature20101/">DNC</a>). 
+
 
 ### References
 
