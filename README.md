@@ -20,11 +20,12 @@ and a "context vector" for this trial, call it context_i (e.g. an image of an ap
 - If the model never seen trial i before, it has to integrate x_t over time to figure out the average direction - evidence accumulation.
 - Additionally, context is trial unique - context_i is always paired with y_i, for all i. Therefore if context_i (e.g. the apple image) reoccur, the model can respond y_i (left button press) directly without doing evidence accumulation. The model wants to respond earlier because this maximizes cumulative return. 
 
-Note that this is only possible if the model stored (context_i, y_i) into its episodic memory buffer (DND). So this task shows the model can use episodic memory to guide its choices. 
+Note that this is only possible if the model stored (context_i, y_i) into its episodic memory buffer (DND). So this task can demonstrate if the model can use episodic memory to guide its choices. 
 
 ### Results
 
-Behaviorally, when the model encounters a previously-seen trial, the choice accuracy jumps to 1 immediately. By design, this is only possible if the model can retrieve the correct episodic memory (Without a relevant memory, there is no way to perform better than chance before t=5). 
+Behaviorally, when the model encounters a previously-seen trial, the choice accuracy jumps to ceiling immediately. By task design, this is only possible if the model can retrieve the correct episodic memory. 
+- Without a relevant memory, there is no way to perform better than chance before t=5, because inputs before time 5 are noisy. 
 
 <img src="https://github.com/qihongl/dnd-lstm/blob/master/figs/correct-rate.png" width=450>
 
