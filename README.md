@@ -6,7 +6,6 @@ A lstm cell with a differentiable neural dictionary described in Ritter et al. (
 
 
 <img src="https://github.com/qihongl/dnd-lstm/blob/master/figs/dnd-lstm-cell.png" width=500>
-Figure from Ritter et al. (2018). 
 
 
 ### Task description 
