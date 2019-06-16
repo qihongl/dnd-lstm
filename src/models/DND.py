@@ -36,7 +36,7 @@ class DND():
 
     """
 
-    def __init__(self, dict_len, memory_dim, kernel):
+    def __init__(self, dict_len, memory_dim, kernel='l2'):
         # params
         self.dict_len = dict_len
         self.kernel = kernel
@@ -139,7 +139,7 @@ class DND():
             best_memory_id = torch.argmax(similarities)
             best_memory_val = self.vals[best_memory_id]
         else:
-            raise 'unrecog retrieval policy'
+            raise ValueError(f'unrecog recall policy: {policy}')
         return best_memory_val
 
 
@@ -165,9 +165,9 @@ def compute_similarities(query_key, key_list, metric):
         the similarity between query vs. key_i, for all i
 
     """
-    # query_key = query_key.data
+    query_key = query_key.data
     # reshape query to 1 x key_dim
-    q = query_key.data.view(1, -1)
+    q = query_key.view(1, -1)
     # reshape memory keys to #keys x key_dim
     M = torch.stack(key_list, dim=1).view(len(key_list), -1)
     # compute similarities
@@ -178,7 +178,7 @@ def compute_similarities(query_key, key_list, metric):
     elif metric is 'l2':
         similarities = - F.pairwise_distance(q, M, p=2)
     else:
-        raise f'metric: (╯°□°）╯︵ ┻━┻ {metric}'
+        raise ValueError(f'unrecog metric: {metric}')
     return similarities
 
 
