@@ -1,6 +1,6 @@
 # dnd-lstm [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/qihongl/dlstm-demo/master)
 
-A lstm cell with a differentiable neural dictionary described in Ritter et al. (2018). 
+A lstm cell with a differentiable neural dictionary described in <a href="https://arxiv.org/abs/1805.09692">Ritter et al. (2018)</a>. 
 
 
 <img src="https://github.com/qihongl/dnd-lstm/blob/master/figs/dnd-lstm-cell.png" width=500>
