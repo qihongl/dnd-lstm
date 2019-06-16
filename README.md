@@ -47,10 +47,8 @@ analysis of the memory content shows that the choice is encoded in the memory:
 
 ### Extra note 
 
-A variant of the DND part is implemented in 
+1. A variant of the DND part is implemented in 
 <a href="https://princetonuniversity.github.io/PsyNeuLink/">psyneulink</a> 
-as 
-<a href="https://princetonuniversity.github.io/PsyNeuLink/MemoryFunctions.html?highlight=dnd#psyneulink.core.components.functions.statefulfunctions.memoryfunctions.ContentAddressableMemory">
-    pnl.ContentAddressableMemory
-</a>
-. 
+as <a href="https://princetonuniversity.github.io/PsyNeuLink/MemoryFunctions.html?highlight=dnd#psyneulink.core.components.functions.statefulfunctions.memoryfunctions.ContentAddressableMemory">    pnl.ContentAddressableMemory</a>. 
+
+2. The original paper uses A3C. I'm doing A2C instead - no asynchronous parallel rollouts. 
