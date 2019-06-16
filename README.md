@@ -10,7 +10,9 @@ A lstm cell with a differentiable neural dictionary described in Ritter et al. (
 
 ### Task description 
 
-`src/contextual-choice.ipynb` contains an evidence accumulation task with "context". 
+`src/contextual-choice.ipynb` contains an 
+<a href="https://en.wikipedia.org/wiki/Two-alternative_forced_choice#Behavioural_experiments">evidence accumulation task </a>
+with "context". 
 
 In the i-th trial,
 
@@ -29,7 +31,9 @@ Behaviorally, when the model encounters a previously-seen trial, the choice accu
 
 <img src="https://github.com/qihongl/dnd-lstm/blob/master/figs/correct-rate.png" width=450>
 
-PCA analysis of the memory content shows that the choice is encoded in the memory: 
+A 
+<a href="https://en.wikipedia.org/wiki/Principal_component_analysis">PCA</a>
+analysis of the memory content shows that the choice is encoded in the memory: 
 
 <img src="https://github.com/qihongl/dnd-lstm/blob/master/figs/pc-v.png" width=450>
 
