@@ -26,11 +26,11 @@ Note that this is only possible if the model stored (context_i, y_i) into its ep
 
 Behaviorally, when the model encounters a previously-seen trial, the choice accuracy jumps to 1 immediately. By design, this is only possible if the model can retrieve the correct episodic memory (Without a relevant memory, there is no way to perform better than chance before t=5). 
 
-<img src="https://github.com/qihongl/dnd-lstm/blob/master/figs/correct-rate.png" width=500>
+<img src="https://github.com/qihongl/dnd-lstm/blob/master/figs/correct-rate.png" width=450>
 
 Projecting the memory vectors to the PC space reveal that the choice is encoded in the memory:  
 
-<img src="https://github.com/qihongl/dnd-lstm/blob/master/figs/pc-v.png" width=500>
+<img src="https://github.com/qihongl/dnd-lstm/blob/master/figs/pc-v.png" width=450>
 
 
 ### References
