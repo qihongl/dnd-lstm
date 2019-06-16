@@ -66,13 +66,13 @@ class DNDLSTM(nn.Module):
         # new cell state = gated(prev_c) + gated(new_stuff)
         c_t = torch.mul(f_t, c) + torch.mul(i_t, c_t_new)
         # retrieve memory
-        m_t = self.dnd.get_memory(c_t).tanh()
+        m_t = self.dnd.get_memory(x_t).tanh()
         # gate the memory; in general, can be any transformation of it
         c_t = c_t + torch.mul(r_t, m_t)
         # get gated hidden state from the cell state
         h_t = torch.mul(o_t, c_t.tanh())
         # take a episodic snapshot
-        self.dnd.save_memory(c_t, h_t)
+        self.dnd.save_memory(x_t, c_t)
         # policy
         pi_a_t, v_t = self.a2c.forward(h_t)
         # reshape data

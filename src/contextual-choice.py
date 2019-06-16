@@ -7,7 +7,7 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 
 from envs import ContextualChoiceTask
-from models import SimpleDNDLSTM as Agent
+from models import DNDLSTM as Agent
 from models.utils import get_init_states, entropy
 from models.DND import compute_similarities
 from models import pick_action, get_reward, compute_returns, compute_a2c_loss
@@ -29,7 +29,7 @@ vec_dim = 32
 task = ContextualChoiceTask(vec_dim=vec_dim, T=T, t_noise_off=t_noise_off)
 
 # num unique training examples in one epoch
-M = 50
+M = 30
 X, K, Y = task.gen_data(M)
 trial_len, _, dim_input = X.size()
 # from scipy.spatial import distance_matrix
@@ -48,7 +48,7 @@ dim_hidden = n_hidden
 dim_output = 2
 dict_len = 100
 learning_rate = 1e-3
-n_epochs = 50
+n_epochs = 20
 eta = 0
 
 # init model and hidden state.
@@ -91,7 +91,7 @@ for i in range(n_epochs):
             if t == T-1 and m < M:
                 agent.turn_on_encoding()
             # recurrent computation at time t
-            outputs_ = agent(x_m[t].view(1, 1, -1), h_t, c_t, K[m][t])
+            outputs_ = agent(x_m[t].view(1, 1, -1), h_t, c_t)
             pi_a_t, v_t, h_t, c_t, cache_t = outputs_
             # action selection
             a_t, prob_a_t = pick_action(pi_a_t)
@@ -134,7 +134,7 @@ for i in range(n_epochs):
 
 
 '''analysis'''
-f, axes = plt.subplots(1, 2, figsize=(7, 4))
+f, axes = plt.subplots(1, 2, figsize=(8, 3))
 axes[0].plot(log_return)
 axes[0].set_ylabel('Return')
 axes[0].set_xlabel('Epoch')
@@ -220,8 +220,7 @@ for y_val in np.unique(all_ys):
 ax.set_title(f'Each point is a memory in the PC space')
 ax.set_xlabel(f'PC {pc_x}')
 ax.set_ylabel(f'PC {pc_y}')
-ax.legend(['left trial', 'right trial'],
-          frameon=False, bbox_to_anchor=(.65, .8))
+ax.legend(['left trial', 'right trial'], bbox_to_anchor=(.65, .4))
 sns.despine(offset=20)
 f.tight_layout()
 f.savefig('../figs/pc-v.png', dpi=100, bbox_inches='tight')
