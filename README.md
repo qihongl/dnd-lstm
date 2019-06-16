@@ -36,14 +36,24 @@ analysis of the memory content shows that the choice is encoded in the memory:
 <img src="https://github.com/qihongl/dnd-lstm/blob/master/figs/pc-v.png" width=450>
 
 
-### References
+### Dir structure 
 
-- Ritter, S., Wang, J. X., Kurth-Nelson, Z., Jayakumar, S. M., Blundell, C., Pascanu, R., & Botvinick, M. (2018). Been There, Done That: Meta-Learning with Episodic Recall. arXiv [stat.ML]. Retrieved from http://arxiv.org/abs/1805.09692
-
-    - also see Blundell et al. 2016, Pritzel et al. 2017 and Kaiser et al 2017... 
-
-- Mnih, V., Badia, A. P., Mirza, M., Graves, A., Lillicrap, T. P., Harley, T., … Kavukcuoglu, K. (2016). Asynchronous Methods for Deep Reinforcement Learning. Retrieved from http://arxiv.org/abs/1602.01783
-
+```
+.
+└── src
+    ├── contextual-choice.ipynb     # the "main" script in ipynb
+    ├── contextual-choice.py        # the "main" script in py
+    ├── envs
+    │   ├── ContextualChoice.py     # task definition 
+    │   └── __init__.py
+    └── models
+        ├── A2C.py                  # the a2c forward graph  
+        ├── DND.py                  # the dnd module  
+        ├── DNDLSTM.py              # a lstm cell with dnd and a2c 
+        ├── __init__.py
+        ├── _a2c_helpers.py         # some helper functions for a2c
+        └── utils.py                # some general helper functions 
+```
 
 ### Extra note 
 
@@ -52,3 +62,13 @@ analysis of the memory content shows that the choice is encoded in the memory:
 as <a href="https://princetonuniversity.github.io/PsyNeuLink/MemoryFunctions.html?highlight=dnd#psyneulink.core.components.functions.statefulfunctions.memoryfunctions.ContentAddressableMemory">    pnl.ContentAddressableMemory</a>. 
 
 2. The original paper uses A3C. I'm doing A2C instead - no asynchronous parallel rollouts. 
+
+
+### References
+
+- Ritter, S., Wang, J. X., Kurth-Nelson, Z., Jayakumar, S. M., Blundell, C., Pascanu, R., & Botvinick, M. (2018). Been There, Done That: Meta-Learning with Episodic Recall. arXiv [stat.ML]. Retrieved from http://arxiv.org/abs/1805.09692
+
+    - also see Blundell et al. 2016, Pritzel et al. 2017 and Kaiser et al 2017... 
+
+- Mnih, V., Badia, A. P., Mirza, M., Graves, A., Lillicrap, T. P., Harley, T., … Kavukcuoglu, K. (2016). Asynchronous Methods for Deep Reinforcement Learning. Retrieved from http://arxiv.org/abs/1602.01783
+
