@@ -2,3 +2,5 @@ torch
 numpy
 matplotlib
 seaborn
+scikit-learn
+scipy
