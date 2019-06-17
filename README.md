@@ -8,7 +8,7 @@ A lstm cell with a differentiable neural dictionary described in <a href="https:
 
 ### Task description 
 
-`src/contextual-choice.ipynb` contains an 
+`src/contextual-choice.ipynb` tests the model on an 
 <a href="https://en.wikipedia.org/wiki/Two-alternative_forced_choice#Behavioural_experiments">evidence accumulation task </a>
 with "context". 
 
