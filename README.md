@@ -15,12 +15,12 @@ with "context".
 In the i-th trial,
 
 - At time t, the model receives noisy observation, x_t (e.g. random dots moving around, slightly drifting to left/right)
-and a "context vector" for this trial, call it context_i (e.g. an image of an apple)
+and a "context vector" for this trial, call it cue_i (e.g. an image of an apple)
 - The task is to respond the average direction of x_t (i.e. sign), analogous to making a left/right button press. Let's denote the response target by y_i.  
 - If the model never seen trial i before, it has to integrate x_t over time to figure out the average direction - evidence accumulation.
-- Additionally, context is trial unique - context_i is always paired with y_i, for all i. Therefore if context_i (e.g. the apple image) reoccur, the model can respond y_i (left button press) directly without doing evidence accumulation. The model wants to respond earlier because this maximizes cumulative return. 
+- Additionally, the cue is trial unique - cue_i is always paired with y_i, for all i. Therefore if cue_i (e.g. the apple image) reoccur, the model can respond y_i (left button press) directly without doing evidence accumulation. The model wants to respond earlier because this maximizes cumulative return. 
 
-Note that this is only possible if the model stored (context_i, y_i) into its episodic memory buffer (DND). So this task can demonstrate if the model can use episodic memory to guide its choices. 
+Note that this is only possible if the model stored (cue_i, y_i) into its episodic memory buffer (DND). So this task can demonstrate if the model can use episodic memory to guide its choices. 
 
 ### Results
 
@@ -64,7 +64,7 @@ as <a href="https://princetonuniversity.github.io/PsyNeuLink/MemoryFunctions.htm
 2. The original paper uses A3C. I'm doing A2C instead - no asynchronous parallel rollouts. 
 
 3. The memory module is called a "differentiable neural dictionary", but note that it is not fully differentiable, unlike end-to-end models (e.g. <a href="https://arxiv.org/abs/1410.5401">NTM</a>, <a href="https://www.nature.com/articles/nature20101/">DNC</a>). 
-Actually, that's the point: as it is non-differentiable, one can impose some explicit structure of what the memory module suppose to do, such as one-nearest neighbor search or kernel-based similarity lookup. 
+By giving up end-to-end differentiability, one can impose some explicit structure of what the memory module suppose to do, such as one-nearest neighbor search or kernel-weighted averaging. 
 
 
 ### References
