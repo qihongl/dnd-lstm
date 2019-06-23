@@ -61,7 +61,7 @@ analysis of the memory content shows that the choice is encoded in the memory:
 <a href="https://princetonuniversity.github.io/PsyNeuLink/">psyneulink</a> 
 as <a href="https://princetonuniversity.github.io/PsyNeuLink/MemoryFunctions.html?highlight=dnd#psyneulink.core.components.functions.statefulfunctions.memoryfunctions.ContentAddressableMemory">    pnl.ContentAddressableMemory</a>. 
 
-2. The original paper uses A3C. I'm doing A2C instead - no asynchronous parallel rollouts. 
+2. The original paper uses A3C. I'm doing A2C instead - no asynchronous parallel rollouts. If you are not familiar with these ideas, here's a <a href="https://github.com/qihongl/demo-advantage-actor-critic">a standalone demo of A2C</a>. 
 
 3. The memory module is called a "differentiable neural dictionary", but note that it is not fully differentiable, unlike end-to-end models (e.g. <a href="https://arxiv.org/abs/1410.5401">NTM</a>, <a href="https://www.nature.com/articles/nature20101/">DNC</a>). 
 By giving up end-to-end differentiability, one can impose some explicit structure of what the memory module suppose to do, such as one-nearest neighbor search or kernel-weighted averaging. 
