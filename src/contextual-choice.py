@@ -31,16 +31,30 @@ task = ContextualChoiceTask(vec_dim=vec_dim, T=T, t_noise_off=t_noise_off)
 # num unique training examples in one epoch
 M = 30
 X, K, Y = task.gen_data(M)
-trial_len, _, dim_input = X.size()
-# from scipy.spatial import distance_matrix
-# ks = np.array([X[m, 0, :].numpy() for m in range(M)])
-# sns.heatmap(-distance_matrix(ks, ks), cmap='viridis')
+n_trials, _, dim_input = X.size()
 
-# X, K, Y = gen_data(vec_dim, T, M, t_noise_off)
-print(f'X.size: {X.size()}, M x T x V x dummy_dim')
-print(f'K.size: {K.size()}, M x T x V x dummy_dim')
-print(f'Y.size: {Y.size()}, M x T x V x dummy_dim')
+print(f'X.size: {X.size()}, M x T x x-dim')
+print(f'Y.size: {Y.size()}, M x T')
 
+# i = 0
+# input = X[i].numpy()
+# target = Y[i][0].numpy()
+# vmin = np.min(X.numpy())
+# vmax = np.max(X.numpy())
+#
+# f, ax = plt.subplots(1, 1, figsize=(3, 5))
+# sns.heatmap(
+#     input.T,
+#     vmin=vmin, vmax=vmax,
+#     cmap='RdBu_r', yticklabels=10, center=0,
+#     ax=ax
+# )
+# ax.axvline(t_noise_off, color='grey', linestyle='--')
+# ax.axhline(vec_dim, color='black', linestyle='--')
+# ax.set_title(f'Stimulus for a trial, y = {target}')
+# ax.set_xlabel('Time')
+# ax.set_ylabel('x-dim: context | input')
+# f.savefig(f'../figs/eg-{target}.png', dpi=100, bbox_inches='tight')
 
 # set params
 n_hidden = 32
@@ -62,9 +76,9 @@ log_ent = np.zeros(n_epochs,)
 log_loss_value = np.zeros(n_epochs,)
 log_loss_policy = np.zeros(n_epochs,)
 
-log_Y = np.zeros((n_epochs, trial_len, T))
-log_Y_hat = np.zeros((n_epochs, trial_len, T))
-log_rgate = np.zeros((trial_len, T, dim_hidden))
+log_Y = np.zeros((n_epochs, n_trials, T))
+log_Y_hat = np.zeros((n_epochs, n_trials, T))
+log_rgate = np.zeros((n_trials, T, dim_hidden))
 
 # loop over epoch
 for i in range(n_epochs):
@@ -76,7 +90,7 @@ for i in range(n_epochs):
     agent.turn_on_retrieval()
 
     # loop over the training set
-    for m in range(trial_len):
+    for m in range(n_trials):
         x_m, y_m, k_m = X[m], Y[m], K[m]
         # prealloc
         cumulative_reward = 0
@@ -118,10 +132,10 @@ for i in range(n_epochs):
 
         # log
         log_Y[i] = Y.numpy()
-        log_ent[i] = cumulative_entropy / trial_len
-        log_return[i] += cumulative_reward / trial_len
-        log_loss_value[i] += loss_value.item() / trial_len
-        log_loss_policy[i] += loss_policy.item() / trial_len
+        log_ent[i] = cumulative_entropy / n_trials
+        log_return[i] += cumulative_reward / n_trials
+        log_loss_value[i] += loss_value.item() / n_trials
+        log_loss_policy[i] += loss_policy.item() / n_trials
 
     # print out some stuff
     time_end = time.time()
@@ -163,7 +177,7 @@ ax.set_title('Behavioral signature of memory based choice')
 f.legend(frameon=False, bbox_to_anchor=(1, .6))
 sns.despine()
 f.tight_layout()
-f.savefig('../figs/correct-rate.png', dpi=100, bbox_inches='tight')
+# f.savefig('../figs/correct-rate.png', dpi=100, bbox_inches='tight')
 
 '''visualize keys and values'''
 dmat_mm = np.zeros((len(agent.dnd.keys), len(agent.dnd.keys)))
@@ -223,7 +237,7 @@ ax.set_ylabel(f'PC {pc_y}')
 ax.legend(['left trial', 'right trial'], bbox_to_anchor=(.65, .4))
 sns.despine(offset=20)
 f.tight_layout()
-f.savefig('../figs/pc-v.png', dpi=100, bbox_inches='tight')
+# f.savefig('../figs/pc-v.png', dpi=100, bbox_inches='tight')
 
 # f, ax = plt.subplots(1, 1, figsize=(6, 4))
 # ax.plot(np.cumsum(pca.explained_variance_ratio_))

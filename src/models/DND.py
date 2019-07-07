@@ -85,8 +85,8 @@ class DND():
             return
         # add new memory to the the dictionary
         # get data is necessary for gradient reason
-        self.keys.append(memory_key.data.view(1, -1))
-        self.vals.append(memory_val.data.view(1, -1))
+        self.keys.append(torch.squeeze(memory_key.data))
+        self.vals.append(torch.squeeze(memory_val.data))
         # remove the oldest memory, if overflow
         if len(self.keys) > self.dict_len:
             self.keys.pop(0)
@@ -169,7 +169,7 @@ def compute_similarities(query_key, key_list, metric):
     # reshape query to 1 x key_dim
     q = query_key.view(1, -1)
     # reshape memory keys to #keys x key_dim
-    M = torch.stack(key_list, dim=1).view(len(key_list), -1)
+    M = torch.stack(key_list)
     # compute similarities
     if metric is 'cosine':
         similarities = F.cosine_similarity(q, M)
