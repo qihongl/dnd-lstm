@@ -12,20 +12,27 @@ A lstm cell with a differentiable neural dictionary described in <a href="https:
 <a href="https://en.wikipedia.org/wiki/Two-alternative_forced_choice#Behavioural_experiments">evidence accumulation task </a>
 with "context". 
 
-In the i-th trial,
+More concretely, in the i-th trial ... 
 
 - At time t, the model receives noisy observation, x_t (e.g. random dots moving around, slightly drifting to left/right)
-and a "context vector" for this trial, call it cue_i (e.g. an image of an apple)
-- The task is to respond the average direction of x_t (i.e. sign), analogous to making a left/right button press. Let's denote the response target by y_i.  
-- If the model never seen trial i before, it has to integrate x_t over time to figure out the average direction - evidence accumulation.
-- Additionally, the cue is trial unique - cue_i is always paired with y_i, for all i. Therefore if cue_i (e.g. the apple image) reoccur, the model can respond y_i (left button press) directly without doing evidence accumulation. The model wants to respond earlier because this maximizes cumulative return. 
+and a "context" for this trial, call it context_i (e.g. an image of an apple)
+- The task is to press button 0 if x_t is, on average, negative and press 1 otherwise (like press left/right button according to the average direction of the moving dots). Let's denote the response target by y_i, so y_i \in {0, 1}.  
+- If the model never saw trial i before, it has to base its decision in x_t. However, if it this is the 2nd encounter of trial i, assuming the model cached the association between context_i and y_i in its episodic memory, then the model can just output y_i. 
 
-Note that this is only possible if the model stored (cue_i, y_i) into its episodic memory buffer (DND). So this task can demonstrate if the model can use episodic memory to guide its choices. 
+
+Since context is always presented within a trial, making decisions based on recalling context-target association allows the model to respond faster, which is desirable since the model wants to maximize cumulative reward. 
+
+#### Stimulus
+
+Here're the stimuli for two example trials. The horizontal axis represents time, before the grey dotted line, I turned on very high level of noise so that making better-than-chance deicisons is impossible without episodic memory. The top half of the input represent the observation time series, and the bottom half represent the context (over time). 
+
+The left/right figure shows a trial where the model needs to respond 0/1 since observation is negative/positive on average. 
+
+<img src="https://github.com/qihongl/dnd-lstm/blob/master/figs/eg-0.png" width=250><img src="https://github.com/qihongl/dnd-lstm/blob/master/figs/eg-1.png" width=250>
 
 ### Results
 
 Behaviorally, when the model encounters a previously-seen trial, the choice accuracy jumps to ceiling immediately. By task design, this is only possible if the model can retrieve the correct episodic memory. 
-- Without a relevant memory, there is no way to perform better than chance before t=5, because inputs before time 5 are noisy. 
 
 <img src="https://github.com/qihongl/dnd-lstm/blob/master/figs/correct-rate.png" width=450>
 
