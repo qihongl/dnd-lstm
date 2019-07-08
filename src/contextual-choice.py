@@ -1,4 +1,4 @@
-"""demo: a contextual evidence integration task
+"""demo: train a DND LSTM on a contextual choice task
 """
 import time
 import torch
@@ -6,7 +6,7 @@ import numpy as np
 import seaborn as sns
 import matplotlib.pyplot as plt
 
-from envs import ContextualChoiceTask
+from envs import ContextualChoice
 from models import DNDLSTM as Agent
 from models.utils import get_init_states, entropy
 from models.DND import compute_similarities
@@ -21,44 +21,25 @@ np.random.seed(seed_val)
 
 # gen training set
 # n time steps of a trial
-T = 10
+trial_length = 10
 # after `tp_corrupt`, turn off the noise
 t_noise_off = 5
 # input/output/hidden/memory dim
-vec_dim = 32
-task = ContextualChoiceTask(vec_dim=vec_dim, T=T, t_noise_off=t_noise_off)
+obs_dim = 32
+task = ContextualChoice(
+    obs_dim=obs_dim, trial_length=trial_length,
+    t_noise_off=t_noise_off
+)
 
 # num unique training examples in one epoch
 M = 30
-X, K, Y = task.gen_data(M)
-n_trials, _, dim_input = X.size()
-
-print(f'X.size: {X.size()}, M x T x x-dim')
-print(f'Y.size: {Y.size()}, M x T')
-
-# i = 0
-# input = X[i].numpy()
-# target = Y[i][0].numpy()
-# vmin = np.min(X.numpy())
-# vmax = np.max(X.numpy())
-#
-# f, ax = plt.subplots(1, 1, figsize=(3, 5))
-# sns.heatmap(
-#     input.T,
-#     vmin=vmin, vmax=vmax,
-#     cmap='RdBu_r', yticklabels=10, center=0,
-#     ax=ax
-# )
-# ax.axvline(t_noise_off, color='grey', linestyle='--')
-# ax.axhline(vec_dim, color='black', linestyle='--')
-# ax.set_title(f'Stimulus for a trial, y = {target}')
-# ax.set_xlabel('Time')
-# ax.set_ylabel('x-dim: context | input')
-# f.savefig(f'../figs/eg-{target}.png', dpi=100, bbox_inches='tight')
+X, Y = task.sample(M)
+n_trials = len(X)
+print(f'X.size: {X.size()}, M x trial_length x x-dim')
+print(f'Y.size: {Y.size()}, M x trial_length x y-dim')
 
 # set params
-n_hidden = 32
-dim_hidden = n_hidden
+dim_hidden = 32
 dim_output = 2
 dict_len = 100
 learning_rate = 1e-3
@@ -66,7 +47,7 @@ n_epochs = 20
 eta = 0
 
 # init model and hidden state.
-agent = Agent(dim_input, dim_hidden, dim_output, dict_len)
+agent = Agent(task.x_dim, dim_hidden, dim_output, dict_len)
 optimizer = torch.optim.Adam(agent.parameters(), lr=learning_rate)
 
 
@@ -76,22 +57,22 @@ log_ent = np.zeros(n_epochs,)
 log_loss_value = np.zeros(n_epochs,)
 log_loss_policy = np.zeros(n_epochs,)
 
-log_Y = np.zeros((n_epochs, n_trials, T))
-log_Y_hat = np.zeros((n_epochs, n_trials, T))
-log_rgate = np.zeros((n_trials, T, dim_hidden))
+log_Y = np.zeros((n_epochs, n_trials, trial_length))
+log_Y_hat = np.zeros((n_epochs, n_trials, trial_length))
+log_rgate = np.zeros((n_trials, trial_length, dim_hidden))
 
 # loop over epoch
 for i in range(n_epochs):
     time_start = time.time()
     # get data for this epoch
-    X, K, Y = task.gen_data(M)
+    X, Y = task.sample(M)
     # flush hippocampus
     agent.dnd.reset_memory()
     agent.turn_on_retrieval()
 
     # loop over the training set
     for m in range(n_trials):
-        x_m, y_m, k_m = X[m], Y[m], K[m]
+        x_m, y_m = X[m], Y[m]
         # prealloc
         cumulative_reward = 0
         cumulative_entropy = 0
@@ -99,10 +80,10 @@ for i in range(n_epochs):
         h_t, c_t = get_init_states(dim_hidden)
 
         # loop over time, for one training example
-        for t in range(T):
+        for t in range(trial_length):
             # only save memory at the last time point
             agent.turn_off_encoding()
-            if t == T-1 and m < M:
+            if t == trial_length-1 and m < M:
                 agent.turn_on_encoding()
             # recurrent computation at time t
             outputs_ = agent(x_m[t].view(1, 1, -1), h_t, c_t)
@@ -131,7 +112,7 @@ for i in range(n_epochs):
         optimizer.step()
 
         # log
-        log_Y[i] = Y.numpy()
+        log_Y[i] = np.squeeze(Y.numpy())
         log_ent[i] = cumulative_entropy / n_trials
         log_return[i] += cumulative_reward / n_trials
         log_loss_value[i] += loss_value.item() / n_trials
@@ -168,8 +149,8 @@ mu_mem1 = np.mean(corrects[M:], axis=0)
 er_mem1 = sem(corrects[M:], axis=0) * n_se
 
 f, ax = plt.subplots(1, 1, figsize=(7, 4))
-ax.errorbar(range(T), y=mu_mem0, yerr=er_mem0, label='w/o memory')
-ax.errorbar(range(T), y=mu_mem1, yerr=er_mem1, label='w/  memory')
+ax.errorbar(range(trial_length), y=mu_mem0, yerr=er_mem0, label='w/o memory')
+ax.errorbar(range(trial_length), y=mu_mem1, yerr=er_mem1, label='w/  memory')
 ax.axvline(t_noise_off, label='turn off noise', color='grey', linestyle='--')
 ax.set_xlabel('Time')
 ax.set_ylabel('Correct rate')
@@ -213,7 +194,7 @@ all_keys = np.vstack(
     [agent.dnd.keys[i].data.numpy() for i in range(len(agent.dnd.keys))])
 all_vals = np.vstack(
     [agent.dnd.vals[i].data.numpy() for i in range(len(agent.dnd.vals))])
-all_ys = Y[:M, 0].numpy()
+Y_phase2 = np.squeeze(Y[:M, 0].numpy())
 
 # embed the memory to PC space
 pca = PCA(n_components=10)
@@ -224,14 +205,14 @@ pc_y = 1
 
 # plot
 f, ax = plt.subplots(1, 1, figsize=(7, 5))
-for y_val in np.unique(all_ys):
-    y_mask = all_ys == y_val
+for y_val in np.unique(Y_phase2):
+    y_mask = Y_phase2 == y_val
     ax.scatter(
         all_vals_pca[y_mask, pc_x],
         all_vals_pca[y_mask, pc_y],
         marker='o', alpha=.5,
     )
-ax.set_title(f'Each point is a memory in the PC space')
+ax.set_title(f'Each point is a memory')
 ax.set_xlabel(f'PC {pc_x}')
 ax.set_ylabel(f'PC {pc_y}')
 ax.legend(['left trial', 'right trial'], bbox_to_anchor=(.65, .4))
@@ -248,21 +229,21 @@ f.tight_layout()
 # f.tight_layout()
 
 
-mean_rgate = np.mean(log_rgate, axis=-1)
-
-n_se = 2
-mu_mem0 = np.mean(mean_rgate[:M], axis=0)
-er_mem0 = sem(mean_rgate[:M], axis=0) * n_se
-mu_mem1 = np.mean(mean_rgate[M:], axis=0)
-er_mem1 = sem(mean_rgate[M:], axis=0) * n_se
-
-f, ax = plt.subplots(1, 1, figsize=(7, 4))
-ax.errorbar(range(T), y=mu_mem0, yerr=er_mem0, label='trials w/o memory')
-ax.errorbar(range(T), y=mu_mem1, yerr=er_mem1, label='trials w/  memory')
-ax.axvline(t_noise_off, label='turn off noise', color='grey', linestyle='--')
-ax.set_xlabel('Time')
-ax.set_ylabel(r'$r_t$    ', rotation=0)
-ax.set_title('Average r gate value')
-f.legend(frameon=False, bbox_to_anchor=(1, .8))
-sns.despine()
-f.tight_layout()
+# mean_rgate = np.mean(log_rgate, axis=-1)
+#
+# n_se = 2
+# mu_mem0 = np.mean(mean_rgate[:M], axis=0)
+# er_mem0 = sem(mean_rgate[:M], axis=0) * n_se
+# mu_mem1 = np.mean(mean_rgate[M:], axis=0)
+# er_mem1 = sem(mean_rgate[M:], axis=0) * n_se
+#
+# f, ax = plt.subplots(1, 1, figsize=(7, 4))
+# ax.errorbar(range(trial_length), y=mu_mem0, yerr=er_mem0, label='trials w/o memory')
+# ax.errorbar(range(trial_length), y=mu_mem1, yerr=er_mem1, label='trials w/  memory')
+# ax.axvline(t_noise_off, label='turn off noise', color='grey', linestyle='--')
+# ax.set_xlabel('Time')
+# ax.set_ylabel(r'$r_t$    ', rotation=0)
+# ax.set_title('Average r gate value')
+# f.legend(frameon=False, bbox_to_anchor=(1, .8))
+# sns.despine()
+# f.tight_layout()
