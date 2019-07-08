@@ -20,7 +20,7 @@ and a "context" for this trial, call it context_i (e.g. an image of an apple)
 - If the model never saw trial i before, it has to base its decision in x_t. However, if it this is the 2nd encounter of trial i, assuming the model cached the association between context_i and y_i in its episodic memory, then the model can just output y_i. 
 
 
-Since context is always presented within a trial, making decisions based on recalling context-target association allows the model to respond faster, which is desirable since the model wants to maximize cumulative reward. 
+Since context is always presented within a trial, making decisions based on recalling the context-target association allows the model to respond faster, which leads to greater cumulative reward. 
 
 #### Stimulus
 
