@@ -1,7 +1,6 @@
+import torch
 import torch.nn as nn
 import torch.nn.functional as F
-
-from models.utils import softmax, ortho_init
 
 
 class A2C(nn.Module):
@@ -38,7 +37,7 @@ class A2C(nn.Module):
         self.ih = nn.Linear(dim_input, dim_hidden)
         self.actor = nn.Linear(dim_hidden, dim_output)
         self.critic = nn.Linear(dim_hidden, 1)
-        ortho_init(self)
+        # ortho_init(self)
 
     def forward(self, x, beta=1):
         """compute action distribution and value estimate, pi(a|s), v(s)
@@ -88,7 +87,6 @@ class A2C_linear(nn.Module):
         self.dim_output = dim_output
         self.actor = nn.Linear(dim_input, dim_output)
         self.critic = nn.Linear(dim_input, 1)
-        ortho_init(self)
 
     def forward(self, x, beta=1):
         """compute action distribution and value estimate, pi(a|s), v(s)
@@ -109,3 +107,23 @@ class A2C_linear(nn.Module):
         action_distribution = softmax(self.actor(x), beta)
         value_estimate = self.critic(x)
         return action_distribution, value_estimate
+
+
+def softmax(z, beta):
+    """helper function, softmax with beta
+
+    Parameters
+    ----------
+    z : torch tensor, has 1d underlying structure after torch.squeeze
+        the raw logits
+    beta : float, >0
+        softmax temp, big value -> more "randomness"
+
+    Returns
+    -------
+    1d torch tensor
+        a probability distribution | beta
+
+    """
+    assert beta > 0
+    return torch.nn.functional.softmax(torch.squeeze(z / beta), dim=0)

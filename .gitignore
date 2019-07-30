@@ -102,3 +102,6 @@ venv.bak/
 
 # mypy
 .mypy_cache/
+src/envs/GridWorld.py
+src/contextual-watermaze.py
+src/task/GridWorld.py

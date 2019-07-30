@@ -1,32 +1,11 @@
-import numpy as np
 import torch
-
+import numpy as np
 from torch.nn.functional import smooth_l1_loss
-from torch.distributions import Categorical
+
 
 '''helpers'''
 
 eps = np.finfo(np.float32).eps.item()
-
-
-def pick_action(action_distribution):
-    """action selection by sampling from a multinomial.
-
-    Parameters
-    ----------
-    action_distribution : 1d torch.tensor
-        action distribution, pi(a|s)
-
-    Returns
-    -------
-    torch.tensor(int), torch.tensor(float)
-        sampled action, log_prob(sampled action)
-
-    """
-    m = Categorical(action_distribution)
-    a_t = m.sample()
-    log_prob_a_t = m.log_prob(a_t)
-    return a_t, log_prob_a_t
 
 
 def compute_returns(rewards, gamma=0, normalize=False):

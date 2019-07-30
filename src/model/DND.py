@@ -1,7 +1,3 @@
-"""the DND class
-notes:
-- memory is a row vector
-"""
 import torch
 import torch.nn.functional as F
 
@@ -13,6 +9,9 @@ ALL_POLICIES = ['1NN']
 class DND():
     """The differentiable neural dictionary (DND) class. This enables episodic
     recall in a neural network.
+
+    notes:
+    - a memory is a row vector
 
     Parameters
     ----------
@@ -109,7 +108,7 @@ class DND():
         # if no memory, return the zero vector
         n_memories = len(self.keys)
         if n_memories == 0 or self.retrieval_off:
-            return empty_memory(self.memory_dim)
+            return _empty_memory(self.memory_dim)
         # compute similarity(query, memory_i ), for all i
         similarities = compute_similarities(query_key, self.keys, self.kernel)
         # get the best-match memory
@@ -152,7 +151,7 @@ def compute_similarities(query_key, key_list, metric):
 
     Parameters
     ----------
-    query_key : a row vector
+    query_key : a vector
         Description of parameter `query_key`.
     key_list : list
         Description of parameter `key_list`.
@@ -165,9 +164,8 @@ def compute_similarities(query_key, key_list, metric):
         the similarity between query vs. key_i, for all i
 
     """
-    query_key = query_key.data
     # reshape query to 1 x key_dim
-    q = query_key.view(1, -1)
+    q = query_key.data.view(1, -1)
     # reshape memory keys to #keys x key_dim
     M = torch.stack(key_list)
     # compute similarities
@@ -182,7 +180,7 @@ def compute_similarities(query_key, key_list, metric):
     return similarities
 
 
-def empty_memory(memory_dim):
+def _empty_memory(memory_dim):
     """Get a empty memory, assuming the memory is a row vector
     """
     return torch.zeros(1, memory_dim)

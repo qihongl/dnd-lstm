@@ -135,8 +135,8 @@ if __name__ == "__main__":
     i = 0
     input = X[i]
     target = int(Y[i][0])
-    vmin = np.min(X[i])
-    vmax = np.max(X[i])
+    vmin = np.min(X)
+    vmax = np.max(X)
 
     f, ax = plt.subplots(1, 1, figsize=(3, 5))
     sns.heatmap(
