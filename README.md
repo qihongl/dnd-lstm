@@ -1,6 +1,7 @@
-# dnd-lstm [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/qihongl/dnd-lstm/master)
+# dnd-lstm [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/qihongl/dnd-lstm/master) <a href="https://colab.research.google.com/github/qihongl/dnd-lstm/blob/master/src/contextual-choice.ipynb"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open in Colab" title="Open and Execute in Google Colaboratory"></a>
 
-A lstm cell with a differentiable neural dictionary described in <a href="https://arxiv.org/abs/1805.09692">Ritter et al. (2018)</a>. 
+
+This is a LSTM cell with a differentiable neural dictionary described in <a href="https://arxiv.org/abs/1805.09692">Ritter et al. (2018)</a>. You can run <a href="https://nbviewer.jupyter.org/github/qihongl/dnd-lstm/blob/master/src/contextual-choice.ipynb">dnd-lstm/src/contextual-choice.py</a> with jupyter binder or google colab via links above. 
 
 
 <img src="https://github.com/qihongl/dnd-lstm/blob/master/figs/dnd-lstm-cell.png" width=500>
@@ -44,22 +45,25 @@ analysis of the memory content shows that the choice is encoded in the memory:
 
 
 ### Dir structure 
-
 ```
 .
+├── LICENSE
+├── README.md
+├── figs
+├── requirements.txt
 └── src
-    ├── contextual-choice.ipynb     # the "main" script in ipynb
-    ├── contextual-choice.py        # the "main" script in py
-    ├── envs
-    │   ├── ContextualChoice.py     # task definition 
+    ├── contextual-choice.ipynb         # the contextual choice task, in ipynb
+    ├── contextual-choice.py            # the contextual choice task, in py
+    ├── model   
+    │   ├── A2C.py                      # an advantage actor critic agent
+    │   ├── DND.py                      # the memory module 
+    │   ├── DNDLSTM.py                  # a LSTM-based A2C agent with DND memory 
+    │   ├── utils.py
+    └── └── __init__.py
+    ├── task
+    │   ├── ContextualChoice.py         # the definition of the contextual choice task
     │   └── __init__.py
-    └── models
-        ├── A2C.py                  # the a2c forward graph  
-        ├── DND.py                  # the dnd module  
-        ├── DNDLSTM.py              # a lstm cell with dnd and a2c 
-        ├── __init__.py
-        ├── _a2c_helpers.py         # some helper functions for a2c
-        └── utils.py                # some general helper functions 
+    └── utils.py
 ```
 
 ### Extra note 
