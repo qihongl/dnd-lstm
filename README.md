@@ -44,23 +44,24 @@ analysis of the memory content shows that the choice is encoded in the memory:
 
 
 ### Dir structure 
-
-```
 .
+├── LICENSE
+├── README.md
+├── figs
+├── requirements.txt
 └── src
-    ├── contextual-choice.ipynb     # the "main" script in ipynb
-    ├── contextual-choice.py        # the "main" script in py
-    ├── envs
-    │   ├── ContextualChoice.py     # task definition 
+    ├── contextual-choice.ipynb         # the contextual choice task, in ipynb
+    ├── contextual-choice.py            # the contextual choice task, in py
+    ├── model   
+    │   ├── A2C.py                      # an advantage actor critic agent
+    │   ├── DND.py                      # the memory module 
+    │   ├── DNDLSTM.py                  # a LSTM-based A2C agent with DND memory 
+    │   ├── utils.py
+    └── └── __init__.py
+    ├── task
+    │   ├── ContextualChoice.py         # the definition of the contextual choice task
     │   └── __init__.py
-    └── models
-        ├── A2C.py                  # the a2c forward graph  
-        ├── DND.py                  # the dnd module  
-        ├── DNDLSTM.py              # a lstm cell with dnd and a2c 
-        ├── __init__.py
-        ├── _a2c_helpers.py         # some helper functions for a2c
-        └── utils.py                # some general helper functions 
-```
+    └── utils.py
 
 ### Extra note 
 
