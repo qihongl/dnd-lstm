@@ -52,8 +52,8 @@ analysis of the memory content shows that the choice is encoded in the memory:
 ├── figs
 ├── requirements.txt
 └── src
-    ├── contextual-choice.ipynb         # the contextual choice task, in ipynb
-    ├── contextual-choice.py            # the contextual choice task, in py
+    ├── contextual-choice.ipynb         # train the model on a contextual choice task, in .ipynb
+    ├── contextual-choice.py            # train the model on a contextual choice task, in .py
     ├── model   
     │   ├── A2C.py                      # an advantage actor critic agent
     │   ├── DND.py                      # the memory module 
