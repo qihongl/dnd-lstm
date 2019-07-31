@@ -1,7 +1,7 @@
-# dnd-lstm [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/qihongl/dnd-lstm/master)
+# dnd-lstm [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/qihongl/dnd-lstm/master) <a href="https://colab.research.google.com/github/qihongl/dnd-lstm/blob/master/src/contextual-choice.ipynb"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open in Colab" title="Open and Execute in Google Colaboratory"></a>
+
 
 A lstm cell with a differentiable neural dictionary described in <a href="https://arxiv.org/abs/1805.09692">Ritter et al. (2018)</a>. 
-
 
 <img src="https://github.com/qihongl/dnd-lstm/blob/master/figs/dnd-lstm-cell.png" width=500>
 
