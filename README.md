@@ -44,6 +44,7 @@ analysis of the memory content shows that the choice is encoded in the memory:
 
 
 ### Dir structure 
+```
 .
 ├── LICENSE
 ├── README.md
@@ -62,6 +63,7 @@ analysis of the memory content shows that the choice is encoded in the memory:
     │   ├── ContextualChoice.py         # the definition of the contextual choice task
     │   └── __init__.py
     └── utils.py
+```
 
 ### Extra note 
 
