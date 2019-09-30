@@ -33,7 +33,7 @@ The left/right figure shows a trial where the model needs to respond 0/1 since o
 
 ### Results
 
-Behaviorally, when the model encounters a previously-seen trial, the choice accuracy jumps to ceiling immediately. By task design, this is only possible if the model can retrieve the correct episodic memory. 
+Behaviorally, when the model encounters a previously-seen trial, the choice accuracy is better than chance at t == 0. By task design, this is only possible if the model can retrieve the correct episodic memory. 
 
 <img src="https://github.com/qihongl/dnd-lstm/blob/master/figs/correct-rate.png" width=450>
 
